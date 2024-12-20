@@ -6,5 +6,5 @@ import personal.finance.tracker.model.UserModel;
 public interface AuthService {
     UserModel register(User user);
 
-    UserModel login(String email, String password);
+    String login(String userName, String password);
 }

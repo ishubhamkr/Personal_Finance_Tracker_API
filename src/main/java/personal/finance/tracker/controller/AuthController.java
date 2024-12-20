@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import personal.finance.tracker.entity.User;
+import personal.finance.tracker.model.UserModel;
 import personal.finance.tracker.service.AuthService;
 
 @RestController
@@ -14,9 +15,9 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<Object> register(@RequestBody User user) {
         try {
-            User registeredUser = authService.register(user);
+            UserModel registeredUser = authService.register(user);
             return ResponseEntity.ok(registeredUser);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -24,9 +25,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<Object> login(@RequestParam String userId, @RequestParam String password) {
         try {
-            User loggedInUser = authService.login(email, password);
+            UserModel loggedInUser = authService.login(userId, password);
             return ResponseEntity.ok(loggedInUser);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

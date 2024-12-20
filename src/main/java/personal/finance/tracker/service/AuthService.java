@@ -1,9 +1,10 @@
 package personal.finance.tracker.service;
 
 import personal.finance.tracker.entity.User;
+import personal.finance.tracker.model.UserModel;
 
 public interface AuthService {
-    User register(User user);
+    UserModel register(User user);
 
-    User login(String email, String password);
+    UserModel login(String email, String password);
 }

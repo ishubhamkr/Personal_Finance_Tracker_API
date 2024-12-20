@@ -25,10 +25,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestParam String userId, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestParam String userName, @RequestParam String password) {
         try {
-            UserModel loggedInUser = authService.login(userId, password);
-            return ResponseEntity.ok(loggedInUser);
+            String token = authService.login(userName, password);
+            return ResponseEntity.ok("Bearer " + token);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

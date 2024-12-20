@@ -1,0 +1,17 @@
+apiVersion: v2
+name: personal-finance
+description: A Helm chart for the Personal Finance application
+type: application
+version: 0.1.0
+appVersion: "0.0.1-SNAPSHOT"
+dependencies: []
+keywords:
+  - spring-boot
+  - personal-finance
+  - mongodb
+  - security
+maintainers:
+  - name: Shubham Kumar
+    email: mshubham0309@gmail.com
+sources:
+  - https://github.com/ishubhamkr/Personal_Finance_Tracker_API

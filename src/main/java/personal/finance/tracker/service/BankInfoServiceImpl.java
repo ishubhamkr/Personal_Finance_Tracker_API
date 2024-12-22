@@ -2,13 +2,17 @@ package personal.finance.tracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import personal.finance.tracker.entity.BankInfo;
+import personal.finance.tracker.entity.Transaction;
 import personal.finance.tracker.entity.User;
 import personal.finance.tracker.model.BankDetails;
 import personal.finance.tracker.repository.BankInfoRepository;
+import personal.finance.tracker.repository.TransactionRepository;
 import personal.finance.tracker.repository.UserRepository;
 import personal.finance.tracker.request.BankRegisterRequest;
+import personal.finance.tracker.util.Constant;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,9 +25,13 @@ public class BankInfoServiceImpl implements  BankInfoService{
     private BankInfoRepository bankInfoRepository;
 
     @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public BankDetails addBankInfo(BankRegisterRequest bankData) {
         // Validate that the user exists
         User user = userRepository.findByUserName(bankData.getUserId());
@@ -31,7 +39,7 @@ public class BankInfoServiceImpl implements  BankInfoService{
             throw new IllegalArgumentException("Invalid userId: User does not exist");
         }
 
-        List<BankInfo> bankInfoList = bankInfoRepository.findByUserIdAndBankNameAndBankIFSC(bankData.getUserId(), bankData.getBankName(), bankData.getBankIFSC());
+        BankInfo bankInfoList = bankInfoRepository.findByUserIdAndAccountNumber(bankData.getUserId(), bankData.getAccountNumber());
 
         if(!ObjectUtils.isEmpty(bankInfoList))
         {
@@ -44,16 +52,19 @@ public class BankInfoServiceImpl implements  BankInfoService{
         bankDataUpdate.setUserId(bankData.getUserId());
         bankDataUpdate.setAccountNumber(bankData.getAccountNumber());
         bankDataUpdate.setBalance(bankData.getBalance());
-        bankDataUpdate.setUpdatedDt(LocalDateTime.now());
-        bankDataUpdate.setCreatedDt(LocalDateTime.now());
         bankInfoRepository.save(bankDataUpdate);
 
-        BankDetails bankDetails = new BankDetails();
-        bankDetails.setBankName(bankData.getBankName());
-        bankDetails.setBalance(bankData.getBalance());
+        Transaction transaction = new Transaction();
+        transaction.setAccountNumber(bankData.getAccountNumber());
+        transaction.setUserId(bankData.getUserId());
+        transaction.setType(Constant.INITIAL_AMOUNT);
+        transaction.setAmount(bankData.getBalance());
+        transaction.setGainOrLoss(true);
+        transaction.setCreatedDt(LocalDateTime.now());
+        transactionRepository.save(transaction);
 
 
-        return bankDetails;
+        return getBankDetails(bankDataUpdate);
 
     }
 
@@ -71,11 +82,18 @@ public class BankInfoServiceImpl implements  BankInfoService{
 
         for(BankInfo bankInfo : bankInfoList)
         {
-            BankDetails bankDetails = new BankDetails();
-            bankDetails.setBalance(bankInfo.getBalance());
-            bankDetails.setBankName(bankInfo.getBankName());
+            BankDetails bankDetails = getBankDetails(bankInfo);
             bankDetailsList.add(bankDetails);
         }
         return bankDetailsList;
+    }
+
+    private BankDetails getBankDetails(BankInfo bankInfo)
+    {
+        BankDetails bankDetails = new BankDetails();
+        bankDetails.setBankName(bankInfo.getBankName());
+        bankDetails.setBalance(bankInfo.getBalance());
+        bankDetails.setAccountNumber(bankInfo.getAccountNumber());
+        return bankDetails;
     }
 }

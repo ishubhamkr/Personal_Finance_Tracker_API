@@ -26,8 +26,8 @@ public class BankInfoController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<Object> getBankInfoByUserId(@PathVariable String userId) {
+    @GetMapping("/user/info")
+    public ResponseEntity<Object> getBankInfoByUserId(@RequestParam String userId) {
         try {
             List<BankDetails> bankInfo = bankInfoService.getBankInfoByUserId(userId);
             return ResponseEntity.ok(bankInfo);

@@ -5,12 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import personal.finance.tracker.entity.User;
-import personal.finance.tracker.model.UserModel;
 import personal.finance.tracker.repository.UserRepository;
 import personal.finance.tracker.util.JwtUtil;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+
 
 
 
@@ -28,7 +27,7 @@ public class AuthServiceImpl implements AuthService{
 
 
     @Override
-    public UserModel register(User user) {
+    public String register(User user) {
         //Check if email or username already exists
         if (!ObjectUtils.isEmpty(userRepository.findByUserName(user.getUserName()))) {
             throw new IllegalArgumentException("Username already exists!");
@@ -42,24 +41,19 @@ public class AuthServiceImpl implements AuthService{
         user.setCreatedDt(LocalDateTime.now());
         user.setUpdatedDt(LocalDateTime.now());
         userRepository.save(user);
-        UserModel userModel = new UserModel();
-        userModel.setName(user.getName());
-        userModel.setEmail(user.getEmail());
-        userModel.setPhoneNumber(user.getPhoneNumber());
-        userModel.setAddress(user.getAddress());
-        userModel.setUserName(user.getUserName());
-        return userModel;
+        return jwtUtil.generateToken(user);
     }
 
     @Override
     public String login(String userName, String password) {
+        // Fetch user by username
         User user = userRepository.findByUserName(userName);
-
-        if (!ObjectUtils.isEmpty(user) && passwordEncoder.matches(password, user.getPassword()))
-        {
-            return jwtUtil.generateToken(user.getUserName(),"user");
-        } else {
-            throw new IllegalArgumentException("Invalid userName or password!");
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password");
         }
+
+        // Generate token if credentials are valid
+        return jwtUtil.generateToken(user);
     }
+
 }

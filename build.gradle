@@ -5,17 +5,11 @@ plugins {
 }
 
 group = 'personal.finance'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.5-SNAPSHOT'
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(23)
-	}
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
 	}
 }
 
@@ -32,23 +26,24 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// JWT dependencies
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'javax.servlet:javax.servlet-api:4.0.1'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	//runtime
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	// Jakarta Servlet API for Spring Boot 3.x
+	implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
 
-	//compile
+	// Lombok and other compile dependencies
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	//test
+	// Test dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 }
 
 dependencyManagement {

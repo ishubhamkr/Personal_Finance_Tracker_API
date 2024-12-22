@@ -3,6 +3,7 @@ package personal.finance.tracker.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import personal.finance.tracker.entity.User;
 import personal.finance.tracker.repository.UserRepository;
@@ -27,6 +28,7 @@ public class AuthServiceImpl implements AuthService{
 
 
     @Override
+    @Transactional
     public String register(User user) {
         //Check if email or username already exists
         if (!ObjectUtils.isEmpty(userRepository.findByUserName(user.getUserName()))) {

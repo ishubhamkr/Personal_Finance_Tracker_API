@@ -10,5 +10,5 @@ import java.util.List;
 public interface BankInfoRepository extends MongoRepository<BankInfo, String> {
     List<BankInfo> findByUserId(String userId);
 
-    List<BankInfo> findByUserIdAndBankNameAndBankIFSC(String userId,String bankName,String bankIFSC);
+    BankInfo findByUserIdAndAccountNumber(String userId,String accountNumber);
 }

@@ -1,6 +1,7 @@
 package personal.finance.tracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import personal.finance.tracker.entity.BankInfo;
 import personal.finance.tracker.entity.BorrowerDetails;
@@ -15,6 +16,7 @@ import personal.finance.tracker.util.Constant;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class BorrowerDetailsServiceImpl implements  BorrowerDetailsService{
     @Autowired
     private BorrowerDetailsRepository borrowerDetailsRepository;
@@ -56,7 +58,7 @@ public class BorrowerDetailsServiceImpl implements  BorrowerDetailsService{
     }
 
     @Override
-    public List<BorrowerDetails> getBorrowerDetailsByUserIdAndBankId(String userId, String bankId) {
-        return borrowerDetailsRepository.findByUserIdAndBankId(userId, bankId);
+    public List<BorrowerDetails> getBorrowerDetailsByUserIdAndBankId(String userId) {
+        return borrowerDetailsRepository.findByUserId(userId);
     }
 }

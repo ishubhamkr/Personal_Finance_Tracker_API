@@ -33,4 +33,7 @@ public class Constant {
     public static final String GAIN_INTEREST = "Interest Income";
     public static final String GAIN_GIFTS = "Gifts";
     public static final String GAIN_OTHERS = "Gains Other";
+
+
+    public static final String ROLE = "User";
 }

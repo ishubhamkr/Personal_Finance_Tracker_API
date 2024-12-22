@@ -17,15 +17,15 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody User user) {
         try {
-            UserModel registeredUser = authService.register(user);
-            return ResponseEntity.ok(registeredUser);
+            String token = authService.register(user);
+            return ResponseEntity.ok("Bearer " + token);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String userName, @RequestParam String password) {
+    public ResponseEntity<Object> login(@RequestParam String userName, @RequestParam String password) {
         try {
             String token = authService.login(userName, password);
             return ResponseEntity.ok("Bearer " + token);

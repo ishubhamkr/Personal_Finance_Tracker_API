@@ -7,5 +7,6 @@ import java.util.List;
 public interface BorrowerDetailsService {
     BorrowerDetails saveBorrowerDetails(BorrowerDetails borrowerDetails);
 
-    List<BorrowerDetails> getBorrowerDetailsByUserIdAndBankId(String userId, String bankId);
+    List<BorrowerDetails> getBorrowerDetailsByUserId(String userId);
+
 }

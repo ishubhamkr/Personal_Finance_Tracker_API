@@ -28,10 +28,9 @@ public class BorrowerDetailsController {
 
 
     @GetMapping("/get")
-    public ResponseEntity<Object> getBorrowerDetails(
-            @RequestParam String userId, @RequestParam String bankId) {
+    public ResponseEntity<Object> getBorrowerDetails(@RequestParam String userId) {
         try {
-            List<BorrowerDetails> borrowerDetails = borrowerDetailsService.getBorrowerDetailsByUserIdAndBankId(userId, bankId);
+            List<BorrowerDetails> borrowerDetails = borrowerDetailsService.getBorrowerDetailsByUserId(userId);
             return ResponseEntity.ok(borrowerDetails);
         }catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

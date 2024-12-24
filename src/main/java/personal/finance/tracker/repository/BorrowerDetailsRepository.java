@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BorrowerDetailsRepository extends MongoRepository<BorrowerDetails, String> {
-    List<BorrowerDetails> findByUserIdAndBankId(String userId, String bankId);
 
+    List<BorrowerDetails> findByUserId(String userId);
 }

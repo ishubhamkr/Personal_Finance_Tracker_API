@@ -1,0 +1,8 @@
+.gradle
+build
+target
+.DS_Store
+*.jar
+*.war
+*.class
+*.log

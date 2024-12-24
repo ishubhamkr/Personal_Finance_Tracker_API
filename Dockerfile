@@ -1,13 +1,13 @@
-# Use an official OpenJDK image as the base image
-FROM openjdk:23-jdk-slim
+# Use an official Java runtime as the base image
+FROM eclipse-temurin:17-jdk-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JAR file from the build/libs directory to the container
-COPY build/libs/Personal_Finance_Tracker_API.jar app.jar
+# Copy the correct JAR file into the container
+COPY build/libs/tracker-0.0.5-SNAPSHOT.jar app.jar
 
-# Expose the port that the application will run on
+# Expose the port your application will run on
 EXPOSE 8080
 
 # Run the Spring Boot application
